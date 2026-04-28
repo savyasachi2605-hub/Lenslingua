@@ -1,0 +1,9 @@
+{
+  "name": "Remix: LensLingua - Food & Culture OCR",
+  "description": "Extract text from images, translate them, and discover cultural nuances and allergen information using Gemini AI.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": []
+}

@@ -1,0 +1,45 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Primitives
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { return request.auth != null; }
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Entity Validation
+    function isValidHistoryItem(data) {
+      return data.keys().hasAll(['userId', 'email', 'type', 'timestamp', 'targetLanguage', 'items'])
+          && data.keys().size() == 6
+          && data.userId == request.auth.uid
+          && data.email is string && data.email.size() <= 200
+          && data.type in ['scan', 'audio']
+          && data.timestamp is string && data.timestamp.size() <= 64
+          && data.targetLanguage is string && data.targetLanguage.size() <= 50
+          && data.items is list && data.items.size() <= 50;
+    }
+
+    // Access Rules
+    match /history/{historyId} {
+      allow read: if isSignedIn() && existing().userId == request.auth.uid;
+      
+      allow create: if isSignedIn() 
+                    && isValidId(historyId) 
+                    && isValidHistoryItem(incoming());
+                    
+      allow delete: if isSignedIn() && existing().userId == request.auth.uid;
+      
+      // Updates are not required for history items based on the app logic,
+      // but we would protect them like this if needed.
+      allow update: if false; 
+    }
+  }
+}

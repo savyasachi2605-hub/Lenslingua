@@ -1,0 +1,36 @@
+{
+  "entities": {
+    "ExtractedItem": {
+      "title": "ExtractedItem",
+      "description": "An extracted translation result",
+      "type": "object",
+      "properties": {
+        "originalText": { "type": "string" },
+        "translatedText": { "type": "string" },
+        "context": { "type": "string" },
+        "allergens": { "type": "string" }
+      },
+      "required": ["originalText", "translatedText"]
+    },
+    "TranslationHistory": {
+      "title": "TranslationHistory",
+      "description": "User's translation history entry",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "email": { "type": "string" },
+        "type": { "type": "string", "enum": ["scan", "audio"] },
+        "timestamp": { "type": "string" },
+        "targetLanguage": { "type": "string" },
+        "items": { "type": "array", "items": { "$ref": "ExtractedItem" } }
+      },
+      "required": ["userId", "email", "type", "timestamp", "targetLanguage", "items"]
+    }
+  },
+  "firestore": {
+    "/history/{historyId}": {
+      "schema": "TranslationHistory",
+      "description": "Stores user translation history data"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "lenslingua---food-&-culture-ocr",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@google/genai": "^1.34.0",
+    "firebase": "^12.12.1",
+    "lucide-react": "^1.11.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-image-crop": "^11.0.10"
+  },
+  "devDependencies": {
+    "@firebase/eslint-plugin-security-rules": "^0.0.2",
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}
